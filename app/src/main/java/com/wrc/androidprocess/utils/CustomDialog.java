@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -147,7 +148,9 @@ public class CustomDialog extends Dialog {
         
         public Builder addViewonclick(int viewRes, View.OnClickListener listener) {
             
-            view.findViewById(viewRes).setOnClickListener(listener);
+            LinearLayout layout = (LinearLayout)view.findViewById(viewRes);
+            layout .setOnClickListener(listener);
+            layout.setVisibility(View.VISIBLE);
             return this;
             
         }

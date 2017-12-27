@@ -17,11 +17,13 @@ import android.widget.LinearLayout;
 
 import com.wrc.androidprocess.R;
 import com.wrc.androidprocess.bean.RunningProcess;
+import com.wrc.androidprocess.bean.ShowInfos;
 import com.wrc.androidprocess.dao.RunningProcessDao;
 import com.wrc.androidprocess.utils.AllUtils;
 import com.wrc.androidprocess.utils.CustomDialogUtil;
 import com.wrc.androidprocess.utils.OnClickDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -40,6 +42,7 @@ public class FloatViewService extends Service{
     
     private ImageButton mFloatView;
     private Context mContext;
+    private List<ShowInfos> data = null;
     
     
     @Override
@@ -49,6 +52,7 @@ public class FloatViewService extends Service{
         mContext = this;
         Log.i(TAG, "onCreate");
         createFloatView();
+        data = new ArrayList<>();
     }
     
     @SuppressWarnings("static-access")
@@ -131,25 +135,25 @@ public class FloatViewService extends Service{
     
                 RunningProcessDao runDao= new RunningProcessDao(FloatViewService.this);
                 List<RunningProcess> list = runDao.queryForAll();
-                StringBuilder sb = new StringBuilder();
-                if (list!=null && list.size()>0){
-                    for (int i = 0; i <list.size();i++){
-                        sb.append(list.get(i).getProcessName());
-                        if (list.size()==2 && i==0) {
-                            sb.append("\n");
-                        }
-                    }
-
-                }else {
-                    sb.append("鸡飞蛋打~~~ ");
-                }
+//                StringBuilder sb = new StringBuilder();
+//                if (list!=null && list.size()>0){
+//                    for (int i = 0; i <list.size();i++){
+//                        sb.append(list.get(i).getProcessName());
+//                        if (list.size()==2 && i==0) {
+//                            sb.append("\n");
+//                        }
+//                    }
+//
+//                }else {
+//                    sb.append("鸡飞蛋打~~~ ");
+//                }
 //                Toast.makeText(mContext, sb.toString(), Toast.LENGTH_SHORT).show();
 //                if (list!=null && list.size() >0 && !TextUtils.isEmpty(list.get(0).getProcessName()) ) {
 //                    AllUtils.runApp(mContext, list.get(0).getProcessName());
 //                }else {
 //                Toast.makeText(mContext, sb.toString(), Toast.LENGTH_SHORT).show();
 //                }
-                CustomDialogUtil.showDialogConfirmImg(mContext, true, "测试", new OnClickDialog() {
+                CustomDialogUtil.showDialogConfirmImg(mContext, true, "测试",data, new OnClickDialog() {
     
                     @Override
                     public void text01(String msg) {

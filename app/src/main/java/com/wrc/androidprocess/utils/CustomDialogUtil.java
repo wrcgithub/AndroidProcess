@@ -5,6 +5,9 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.wrc.androidprocess.R;
+import com.wrc.androidprocess.bean.ShowInfos;
+
+import java.util.List;
 
 
 /**
@@ -14,9 +17,12 @@ import com.wrc.androidprocess.R;
 public class CustomDialogUtil {
     
     public static CustomDialog dailog;
+    public  static final  int [] linearArray = new int[]{R.id.linear01,R.id.linear02,R.id.linear03,R.id.linear04};
+    public  static final  int [] textArray = new int[]{R.id.dialog_one_text,R.id.dialog_two_text,R.id.dialog_three_text,R.id.dialog_four_text};
+    public  static final  int [] imgArray = new int[]{0,1,2};
     
     
-    public static void showDialogConfirmImg(Context context, final boolean flag, final String msg , final OnClickDialog linstener) {
+    public static void showDialogConfirmImg(Context context, final boolean flag, final String msg , final List<ShowInfos> data, final OnClickDialog linstener) {
         if (context == null){
             return;
         }
@@ -37,6 +43,7 @@ public class CustomDialogUtil {
                 dailog.dismiss();
             }
         })
+        
         .addViewonclick(R.id.linear03, new View.OnClickListener() {
         
             @Override
@@ -45,9 +52,13 @@ public class CustomDialogUtil {
                 dailog.dismiss();
             }
         })
+        
                 .setText(R.id.dialog_one_text,"com.tencent.tim")
                 .setText(R.id.dialog_two_text,"com.tencent.mm")
                 .setText(R.id.dialog_three_text,"com.android.mms")
+    
+        
+                
                 .build();
         dailog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         

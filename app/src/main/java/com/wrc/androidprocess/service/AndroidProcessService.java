@@ -174,7 +174,7 @@ public class AndroidProcessService extends Service {
     
         Log.e("wrc",shareInfo+"");
         List<RunningProcess> list = runDao.queryForAll();
-        if (list != null && list.size() > 1) {
+        if (list != null && list.size() > 3) {
             runDao.delete(list.get(0));
             RunningProcess process = new RunningProcess();
             process.setProcessName(shareInfo);
