@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.wenming.library.BackgroundUtil;
 import com.wenming.library.SharePreTool;
@@ -170,7 +171,8 @@ public class AndroidProcessService extends Service {
     
     
     private void saveDB(Context context, String shareInfo) {
-        
+    
+        Log.e("wrc",shareInfo+"");
         List<RunningProcess> list = runDao.queryForAll();
         if (list != null && list.size() > 1) {
             runDao.delete(list.get(0));
