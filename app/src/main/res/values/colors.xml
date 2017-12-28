@@ -6,4 +6,6 @@
     <color name="gray_01">#DEDEDE</color>
     <color name="gray_02">#7E7E7E</color>
     <color name="transparent">#08FFFFFF</color>
+    <color name="material_deep_teal_200">#ff80cbc4</color>
+    <color name="material_deep_teal_500">#ff009688</color>
 </resources>

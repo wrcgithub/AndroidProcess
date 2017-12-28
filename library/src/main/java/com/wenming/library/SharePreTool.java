@@ -23,7 +23,7 @@ public class SharePreTool {
 		}
 	}
 
-	/*
+	/**
 	 * String 设置配置参数
 	 */
 	public static void setStringSP(Context context, String name, String values) {
@@ -34,7 +34,7 @@ public class SharePreTool {
 		editor.commit();
 	}
 
-	/*
+	/**
 	 * int,获取配置参数
 	 */
 	public static int getIntSP(Context context, String name,
@@ -46,7 +46,7 @@ public class SharePreTool {
 		}
 	}
 
-	/*
+	/**
 	 * int,设置参数
 	 */
 	public static void setIntSP(Context context, String name, int value) {
@@ -59,7 +59,7 @@ public class SharePreTool {
 		}
 	}
 
-	/*
+	/**
 	 * boolean类型,获取配置参数
 	 */
 	public static boolean getBooleanSP(Context context, String name,
@@ -71,7 +71,7 @@ public class SharePreTool {
 		}
 	}
 
-	/*
+	/**
 	 * boolean类型,设置参数
 	 */
 	public static void setBooleanSP(Context context, String name,

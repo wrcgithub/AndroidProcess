@@ -40,9 +40,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
     public void onUpgrade(SQLiteDatabase database,
                           ConnectionSource connectionSource, int oldVersion, int newVersion) {
 //        try {
-//            TableUtils.dropTable(connectionSource, Childs.class, true);
-//            TableUtils.dropTable(connectionSource, Courses.class, true);
-//            TableUtils.dropTable(connectionSource, Parents.class, true);
+//            TableUtils.dropTable(connectionSource, RunningProcess.class, true);
 //            onCreate(database, connectionSource);
 //        } catch (SQLException e) {
 //            e.printStackTrace();

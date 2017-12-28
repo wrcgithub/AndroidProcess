@@ -19,14 +19,6 @@ public class RunningProcess  {
      * 进程名称
      */
     public static  final String process_Field = "processName";
-    /**
-     * 保存时间
-     */
-    public static  final String saveTime_Field = "saveTime";
-    /**
-     * 备注
-     */
-    public static  final String remark_Field = "remark";
 
 
     /**
@@ -42,18 +34,6 @@ public class RunningProcess  {
     @DatabaseField(useGetSet=true, columnName = process_Field)
     private String processName;
 
-    /**
-     * 保存时间
-     */
-    @DatabaseField(useGetSet=true, columnName = saveTime_Field)
-    private String saveTime;
-
-
-    /**
-     * 备注
-     */
-    @DatabaseField(useGetSet=true, columnName = remark_Field)
-    private String remark;
 
     // 一个套餐可以对应多个主题
 //    @ForeignCollectionField(eager = true) // 必须
@@ -61,16 +41,6 @@ public class RunningProcess  {
     
     public RunningProcess(){}
     
-    @Override
-    public String toString() {
-        
-        return "RunningProcess{" +
-                "id=" + id +
-                ", processName='" + processName + '\'' +
-                ", saveTime='" + saveTime + '\'' +
-                ", remark='" + remark + '\'' +
-                '}';
-    }
     
     
     public int getId() {
@@ -97,26 +67,4 @@ public class RunningProcess  {
     }
     
     
-    public String getSaveTime() {
-        
-        return saveTime;
-    }
-    
-    
-    public void setSaveTime(String saveTime) {
-        
-        this.saveTime = saveTime;
-    }
-    
-    
-    public String getRemark() {
-        
-        return remark;
-    }
-    
-    
-    public void setRemark(String remark) {
-        
-        this.remark = remark;
-    }
 }

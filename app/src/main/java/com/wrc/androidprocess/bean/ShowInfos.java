@@ -1,6 +1,6 @@
 package com.wrc.androidprocess.bean;
 
-import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 
 import java.io.Serializable;
 
@@ -13,7 +13,7 @@ public class ShowInfos implements Serializable{
     
     private  String appName ;//应用名称
     private  String packageName;//包名
-    private Bitmap bitmap;//应用图片
+    private  Drawable drawable;//应用图片
     
     
     public String getAppName() {
@@ -40,14 +40,14 @@ public class ShowInfos implements Serializable{
     }
     
     
-    public Bitmap getBitmap() {
+    public Drawable getDrawable() {
         
-        return bitmap;
+        return drawable;
     }
     
     
-    public void setBitmap(Bitmap bitmap) {
+    public void setDrawable(Drawable drawable) {
         
-        this.bitmap = bitmap;
+        this.drawable = drawable;
     }
 }

@@ -6,7 +6,8 @@ package com.wrc.androidprocess.utils;
 
 public interface OnClickDialog {
     
-        void text01( String msg);
-        void text02( String msg);
-        void text03( String msg);
+        void view01(String msg);
+        void view02(String msg);
+        void view03(String msg);
+        void view04(String msg);
 }

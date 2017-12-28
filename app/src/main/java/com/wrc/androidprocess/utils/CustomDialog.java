@@ -2,6 +2,7 @@ package com.wrc.androidprocess.utils;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -44,7 +45,6 @@ public class CustomDialog extends Dialog {
         outSideCancel = builder.outSideCancel;
         view = builder.view;
     
-    
     }
     
     
@@ -63,6 +63,7 @@ public class CustomDialog extends Dialog {
         
         
     }
+    
     
     
     public static final class Builder {
@@ -165,7 +166,11 @@ public class CustomDialog extends Dialog {
             imageView.setImageResource(drawable);
             return  this;
         }
-        
+        public Builder setDrawable(int viewRes,Drawable drawable){
+            ImageView imageView =  (ImageView)view.findViewById(viewRes);
+            imageView.setImageDrawable(drawable);
+            return  this;
+        }
         public CustomDialog build() {
             
             if (reStyle != -1) {
@@ -175,4 +180,5 @@ public class CustomDialog extends Dialog {
             }
         }
     }
+    
 }

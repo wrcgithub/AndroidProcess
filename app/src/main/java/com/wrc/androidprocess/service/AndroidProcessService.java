@@ -20,7 +20,6 @@ import com.wrc.androidprocess.contant.Features;
 import com.wrc.androidprocess.dao.RunningProcessDao;
 import com.wrc.androidprocess.receiver.AndroidProcessReceiver;
 import com.wrc.androidprocess.utils.AllUtils;
-import com.wrc.androidprocess.utils.DateUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -155,13 +154,13 @@ public class AndroidProcessService extends Service {
     
     
     private void sharePre(Context context, String foreground) {
-        if (!TextUtils.isEmpty(foreground) && !foreground.equals("null")) {
+        if (!TextUtils.isEmpty(foreground) && !foreground.equals("null") && !foreground.equals("com.wrc.androidprocess")) {
             String saved = SharePreTool.getStringSP(context, SharePreTool.PACKAGE_NAME, "");
             String launcher = AllUtils.getLauncherPackageName(mContext);
                 if (!TextUtils.isEmpty(launcher) && foreground.equals(launcher)) {
                 } else {
                     if (!saved.equals(foreground)) {
-                        SharePreTool.setStringSP(context, SharePreTool.PACKAGE_NAME, foreground);
+                       
                         saveDB(context, foreground);
                     }
                 }
@@ -170,22 +169,25 @@ public class AndroidProcessService extends Service {
     }
     
     
-    private void saveDB(Context context, String shareInfo) {
+    private void saveDB(Context context, String packageName) {
     
-        Log.e("wrc",shareInfo+"");
+        Log.e("wrc",packageName+"");
         List<RunningProcess> list = runDao.queryForAll();
         if (list != null && list.size() > 3) {
-            runDao.delete(list.get(0));
-            RunningProcess process = new RunningProcess();
-            process.setProcessName(shareInfo);
-            process.setSaveTime(DateUtil.dateString(System.currentTimeMillis()));
-            process.setRemark("");
-            runDao.add(process);
+    
+            List<RunningProcess> quer = runDao.queryForPackage(packageName);
+            if (quer == null || quer.size() <1){
+                SharePreTool.setStringSP(context, SharePreTool.PACKAGE_NAME, packageName);
+                runDao.delete(list.get(0));
+                RunningProcess process = new RunningProcess();
+                process.setProcessName(packageName);
+                runDao.add(process);
+            }
+            
         } else {
+            SharePreTool.setStringSP(context, SharePreTool.PACKAGE_NAME, packageName);
             RunningProcess process = new RunningProcess();
-            process.setProcessName(shareInfo);
-            process.setSaveTime(DateUtil.dateString(System.currentTimeMillis()));
-            process.setRemark("");
+            process.setProcessName(packageName);
             runDao.add(process);
         }
         

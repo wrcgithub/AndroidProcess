@@ -97,7 +97,6 @@ public class BackgroundUtil {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
         if (!TextUtils.isEmpty(packageName) && packageName.equals(cn.getPackageName())){
-            SharePreferences(context,packageName);
             return packageName;
         }else {
             return "";
@@ -222,13 +221,7 @@ public class BackgroundUtil {
         }
         Collections.sort(usageStats, mRecentComp);
         String currentTopPackage = usageStats.get(0).getPackageName();
-        Log.e("wrc","currentTopPackage"+currentTopPackage);
         return currentTopPackage;
-//        if (currentTopPackage.equals(packageName)) {
-//            return packageName;
-//        } else {
-//            return "";
-//        }
     }
     /**
      * 方法4：通过使用UsageStatsManager获取，此方法是ndroid5.0A之后提供的API
@@ -334,7 +327,6 @@ public class BackgroundUtil {
         if (DetectService.isAccessibilitySettingsOn(context) == true) {
             DetectService detectService = DetectService.getInstance();
             String foreground = detectService.getForegroundPackage();
-            SharePreferences(context,foreground);
             return packageName.equals(foreground);
         } else {
             Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
@@ -377,19 +369,5 @@ public class BackgroundUtil {
         return false;
         
     }
-private static void SharePreferences(Context context,String shareInfo){
-       String saved = SharePreTool.getStringSP(context,SharePreTool.PACKAGE_NAME,"") ;
-        if (TextUtils.isEmpty(saved) || saved.equals("null")){
-            SharePreTool.setStringSP(context,SharePreTool.PACKAGE_NAME,shareInfo);
-            Log.d("wenming", "**方法五**1 当前窗口焦点对应的包名为： =" + shareInfo);
-        }else if (!saved.equals(shareInfo)) {
-            SharePreTool.setStringSP(context,SharePreTool.PACKAGE_NAME,shareInfo);
-            Log.d("wenming", "**方法五**2 当前窗口焦点对应的包名为： =" + shareInfo);
-        
-        }
-    
-    
-    
-}
 
 }

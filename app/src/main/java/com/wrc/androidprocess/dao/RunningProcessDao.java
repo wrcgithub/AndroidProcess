@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class RunningProcessDao {
 
-    private Dao<RunningProcess, Integer> userInfoDao;
+    private Dao<RunningProcess, Integer> processDao;
     private DatabaseHelper dbHelper;
 
     /**
@@ -27,7 +27,7 @@ public class RunningProcessDao {
     public RunningProcessDao(Context context) {
         try {
             dbHelper = DatabaseHelper.getHelper(context);
-            userInfoDao = dbHelper.getDao(RunningProcess.class);
+            processDao = dbHelper.getDao(RunningProcess.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -39,7 +39,7 @@ public class RunningProcessDao {
      */
     public void add(RunningProcess theme) {
         try {
-            userInfoDao.create(theme);
+            processDao.create(theme);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -51,7 +51,7 @@ public class RunningProcessDao {
      */
     public void delete(RunningProcess theme) {
         try {
-            userInfoDao.delete(theme);
+            processDao.delete(theme);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -63,7 +63,7 @@ public class RunningProcessDao {
      */
     public void deleteList(List<RunningProcess> list) {
         try {
-            userInfoDao.delete(list);
+            processDao.delete(list);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -74,7 +74,7 @@ public class RunningProcessDao {
      */
     public void update(RunningProcess theme) {
         try {
-            userInfoDao.update(theme);
+            processDao.update(theme);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -88,14 +88,26 @@ public class RunningProcessDao {
     public RunningProcess queryForId(int id) {
         RunningProcess theme = null;
         try {
-            theme = userInfoDao.queryForId(id);
+            theme = processDao.queryForId(id);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return theme;
     }
-
-
+    /**
+     * 查询一条记录  根据包名
+     * @param packageName
+     * @return
+     */
+    public List<RunningProcess> queryForPackage(String packageName) {
+        List<RunningProcess> theme = null;
+        try {
+            theme = processDao.queryBuilder().where().eq(RunningProcess.process_Field, packageName).query();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return theme;
+    }
     /**
      * 查询所有记录
      * @return
@@ -103,7 +115,7 @@ public class RunningProcessDao {
     public List<RunningProcess> queryForAll() {
         List<RunningProcess> themes = new ArrayList<RunningProcess>();
         try {
-            themes = userInfoDao.queryForAll();
+            themes = processDao.queryForAll();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -3,7 +3,12 @@ package com.wrc.androidprocess.utils;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.text.TextUtils;
+
+import com.wrc.androidprocess.bean.ShowInfos;
 
 import java.util.List;
 
@@ -55,6 +60,7 @@ public static void runApp(Context context,String packageName){
      * 获取正在运行桌面包名（注：存在多个桌面时且未指定默认桌面时，该方法返回Null,使用时需处理这个情况）
      */
     public static String getLauncherPackageName(Context context) {
+    
         final Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         final ResolveInfo res = context.getPackageManager().resolveActivity(intent, 0);
@@ -69,4 +75,33 @@ public static void runApp(Context context,String packageName){
             return res.activityInfo.packageName;
         }
     }
+        /**
+         * 通过包名获取应用程序的名称。
+         * @param context
+         *            Context对象。
+         * @param packageName
+         *            包名。
+         * @return 返回包名所对应的应用程序的名称。
+         */
+    public static ShowInfos getAppInfoByPackageName(Context context, String packageName) {
+        if (context == null || TextUtils.isEmpty(packageName)){
+            return null;
+        }
+        ShowInfos info = new ShowInfos();
+        PackageManager pm = context.getPackageManager();
+        ApplicationInfo applicationInfo = null;
+        String name = null;
+        try {
+            info.setPackageName(packageName);
+            applicationInfo = pm.getApplicationInfo(packageName,PackageManager.GET_META_DATA);
+            info.setAppName(pm.getApplicationLabel(applicationInfo).toString());
+            info.setDrawable(pm.getApplicationIcon(applicationInfo));
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            info = null;
+        }
+        return info;
+    }
+    
+    
 }

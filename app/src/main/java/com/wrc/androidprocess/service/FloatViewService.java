@@ -4,8 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,6 +17,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.wrc.androidprocess.R;
 import com.wrc.androidprocess.bean.RunningProcess;
@@ -31,7 +35,7 @@ import java.util.List;
  * Created by wrc on 2017/12/9/009.
  */
 
-public class FloatViewService extends Service{
+public class FloatViewService extends Service {
     
     private static final String TAG = "FloatViewService";
     //定义浮动窗口布局
@@ -42,25 +46,27 @@ public class FloatViewService extends Service{
     
     private ImageButton mFloatView;
     private Context mContext;
-    private List<ShowInfos> data = null;
+    private List<ShowInfos> mData = null;
     
     
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
+        
         super.onCreate();
         mContext = this;
         Log.i(TAG, "onCreate");
         createFloatView();
-        data = new ArrayList<>();
+        mData = new ArrayList<>();
     }
     
+    
     @SuppressWarnings("static-access")
-    @SuppressLint("InflateParams") private void createFloatView()
-    {
+    @SuppressLint("InflateParams")
+    private void createFloatView() {
+        
         wmParams = new WindowManager.LayoutParams();
         //通过getApplication获取的是WindowManagerImpl.CompatModeWrapper
-        mWindowManager = (WindowManager)getApplication().getSystemService(getApplication().WINDOW_SERVICE);
+        mWindowManager = (WindowManager) getApplication().getSystemService(getApplication().WINDOW_SERVICE);
         //设置window type
 //        wmParams.type = WindowManager.LayoutParams.TYPE_PHONE;
         wmParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;// 系统提示类型,重要
@@ -92,13 +98,15 @@ public class FloatViewService extends Service{
                 View.MeasureSpec.UNSPECIFIED), View.MeasureSpec
                 .makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         //设置监听浮动窗口的触摸移动
-        mFloatView.setOnTouchListener(new View.OnTouchListener()
-        {
+        mFloatView.setOnTouchListener(new View.OnTouchListener() {
             
             boolean isClick;
             
-            @SuppressLint("ClickableViewAccessibility") @Override
+            
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
             public boolean onTouch(View v, MotionEvent event) {
+                
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 //                        mFloatView.setBackgroundResource(R.drawable.circle_red);
@@ -126,52 +134,55 @@ public class FloatViewService extends Service{
             }
         });
         
-        mFloatView.setOnClickListener(new View.OnClickListener()
-        {
+        mFloatView.setOnClickListener(new View.OnClickListener() {
             
             @Override
-            public void onClick(View v)
-            {
-    
-                RunningProcessDao runDao= new RunningProcessDao(FloatViewService.this);
+            public void onClick(View v) {
+                
+                mData.clear();
+                ;
+                RunningProcessDao runDao = new RunningProcessDao(FloatViewService.this);
                 List<RunningProcess> list = runDao.queryForAll();
-//                StringBuilder sb = new StringBuilder();
-//                if (list!=null && list.size()>0){
-//                    for (int i = 0; i <list.size();i++){
-//                        sb.append(list.get(i).getProcessName());
-//                        if (list.size()==2 && i==0) {
-//                            sb.append("\n");
-//                        }
-//                    }
-//
-//                }else {
-//                    sb.append("鸡飞蛋打~~~ ");
-//                }
-//                Toast.makeText(mContext, sb.toString(), Toast.LENGTH_SHORT).show();
-//                if (list!=null && list.size() >0 && !TextUtils.isEmpty(list.get(0).getProcessName()) ) {
-//                    AllUtils.runApp(mContext, list.get(0).getProcessName());
-//                }else {
-//                Toast.makeText(mContext, sb.toString(), Toast.LENGTH_SHORT).show();
-//                }
-                CustomDialogUtil.showDialogConfirmImg(mContext, true, "测试",data, new OnClickDialog() {
+                if (list != null && list.size() > 0) {
+                    for (int i = 0; i < list.size(); i++){
+                        
+                        ShowInfos infos = AllUtils.getAppInfoByPackageName(FloatViewService.this, list.get(i).getProcessName());
+                        if (infos != null) {
+                            mData.add(infos);
+                        }
+                    }
+                    
+                }
+                if (CustomDialogUtil.dismiss()){
+                    return;
+                }
+                
+                CustomDialogUtil.showApp(mContext, mData, new OnClickDialog() {
     
                     @Override
-                    public void text01(String msg) {
-//                        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                    public void view01(String msg) {
+        
                         AllUtils.runApp(mContext, msg);
                     }
     
     
                     @Override
-                    public void text02(String msg) {
-//                        Toast.makeText(mContext,msg, Toast.LENGTH_SHORT).show();
+                    public void view02(String msg) {
+        
                         AllUtils.runApp(mContext, msg);
                     }
     
     
                     @Override
-                    public void text03(String msg) {
-//                        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+                    public void view03(String msg) {
+        
+                        AllUtils.runApp(mContext, msg);
+                    }
+    
+    
+                    @Override
+                    public void view04(String msg) {
+        
                         AllUtils.runApp(mContext, msg);
                     }
                 });
@@ -179,9 +190,14 @@ public class FloatViewService extends Service{
         });
     }
     
+    
+    private PackageManager pm;
+    private ApplicationInfo appInfo;
+    
+    
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
+        
         super.onDestroy();
 //        if(mFloatLayout != null)
 //        {
@@ -190,9 +206,39 @@ public class FloatViewService extends Service{
 //        }
     }
     
+    
     @Override
     public IBinder onBind(Intent intent) {
+        
         return null;
+    }
+    
+    
+    /**
+     * 测试方法
+     *
+     * @param list
+     */
+    private void test(List<RunningProcess> list) {
+        
+        StringBuilder sb = new StringBuilder();
+        if (list != null && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++){
+                sb.append(list.get(i).getProcessName());
+                if (list.size() == 2 && i == 0) {
+                    sb.append("\n");
+                }
+            }
+            
+        } else {
+            sb.append("鸡飞蛋打~~~ ");
+        }
+        Toast.makeText(mContext, sb.toString(), Toast.LENGTH_SHORT).show();
+        if (list != null && list.size() > 0 && !TextUtils.isEmpty(list.get(0).getProcessName())) {
+            AllUtils.runApp(mContext, list.get(0).getProcessName());
+        } else {
+            Toast.makeText(mContext, sb.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
     
 }
