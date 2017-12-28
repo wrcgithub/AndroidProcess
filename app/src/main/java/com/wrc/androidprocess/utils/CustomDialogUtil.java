@@ -1,7 +1,9 @@
 package com.wrc.androidprocess.utils;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 
 import com.wrc.androidprocess.R;
@@ -105,6 +107,25 @@ public class CustomDialogUtil {
         }
         dailog = builder.build();
         dailog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);//系统级别的Dialog
+    
+        /**
+         * 获取圣诞框的窗口对象及参数对象以修改对话框的布局设置,
+         * 可以直接调用getWindow(),表示获得这个Activity的Window
+         * 对象,这样这可以以同样的方式改变这个Activity的属性.
+         */
+        Window dialogWindow = dailog.getWindow();
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        dialogWindow.setGravity(Gravity.LEFT | Gravity.TOP);
+        lp.x = 1700; // 新位置X坐标
+        lp.y = -700; // 新位置Y坐标
+        lp.width = 300; // 宽度
+        lp.height = 300; // 高度
+        lp.alpha = 0.7f; // 透明度
+    
+        // 当Window的Attributes改变时系统会调用此函数,可以直接调用以应用上面对窗口参数的更改,也可以用setAttributes
+        // dialog.onWindowAttributesChanged(lp);
+        dialogWindow.setAttributes(lp);
+        
         
         dailog.show();
     }
