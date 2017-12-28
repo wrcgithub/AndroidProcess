@@ -147,6 +147,10 @@ public class FloatViewService extends Service {
             @Override
             public void onClick(View v) {
                 
+                
+                
+                
+                
                 mData.clear();
                 RunningProcessDao runDao = new RunningProcessDao(FloatViewService.this);
                 List<RunningProcess> list = runDao.queryForAll();
@@ -159,6 +163,25 @@ public class FloatViewService extends Service {
                         }
                     }
                     
+                }
+    
+                if (mData != null){
+                    int[] location = new  int[2] ;
+                    mFloatView.getLocationOnScreen(location);
+                  int  x = location[0];
+                    int  y = location[1];
+                    Log.e("test", "Screenx--->" + x + "  " + "Screeny--->" + y);
+                    mFloatView.getLocationInWindow(location);
+                      x = location[0];
+                    y = location[1];
+                    Log.e("test", "Window--->" + x + "  " + "Window--->" + y);
+                    Toast.makeText(FloatViewService.this,"无历史记录",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                
+                if (mData == null || mData.size() <1){
+                    Toast.makeText(FloatViewService.this,"无历史记录",Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 
                 

@@ -136,7 +136,12 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 		FileOutputStream fos = null;
 		BufferedOutputStream bos = null;
 		try {
-			fos = new FileOutputStream(dirName + File.separator + fileName);
+			String logName = dirName + File.separator + fileName;
+			File logDir = new File(logName);
+			if (!logDir.exists()) {
+				logDir.mkdirs();
+			}
+			fos = new FileOutputStream(logName);
 			bos = new BufferedOutputStream(fos);
 			bos.write(ByteUtil.toGBK(crashInfo));
 			bos.flush();
