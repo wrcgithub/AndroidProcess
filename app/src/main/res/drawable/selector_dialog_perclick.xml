@@ -3,7 +3,8 @@
     <item android:state_pressed="true">
         <!-- 定义 处于pressed 状态时的形态。-->
         <shape>
-            <gradient android:startColor="@color/gray_02" /><!--内容实现渐变-->
+            <gradient android:startColor="@color/gray_transparent" android:endColor="@color/gray_transparent"/><!--内容实现渐变-->
+            <corners android:radius="20dp" /><!--圆弧半径-->
             <!--<stroke android:width="2dp" android:color="@color/gray_02" />&lt;!&ndash;边框宽度和颜色&ndash;&gt;-->
             <!--<corners android:radius="5dp" />&lt;!&ndash;圆弧半径&ndash;&gt;-->
             <!--<padding android:left="10dp" android:top="10dp"-->

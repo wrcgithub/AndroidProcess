@@ -90,7 +90,6 @@ public static void runApp(Context context,String packageName){
         ShowInfos info = new ShowInfos();
         PackageManager pm = context.getPackageManager();
         ApplicationInfo applicationInfo = null;
-        String name = null;
         try {
             info.setPackageName(packageName);
             applicationInfo = pm.getApplicationInfo(packageName,PackageManager.GET_META_DATA);

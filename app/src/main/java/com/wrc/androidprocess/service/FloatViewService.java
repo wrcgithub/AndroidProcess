@@ -68,8 +68,8 @@ public class FloatViewService extends Service {
         //通过getApplication获取的是WindowManagerImpl.CompatModeWrapper
         mWindowManager = (WindowManager) getApplication().getSystemService(getApplication().WINDOW_SERVICE);
         //设置window type
-//        wmParams.type = WindowManager.LayoutParams.TYPE_PHONE;
-        wmParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;// 系统提示类型,重要
+//        wmParams.type = WindowManager.LayoutParams.TYPE_PHONE;//TYPE_SYSTEM_ERROR
+        wmParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;// 系统提示类型,重要//TYPE_TOAST
         //设置图片格式，效果为背景透明
         wmParams.format = PixelFormat.RGBA_8888;
         //设置浮动窗口不可聚焦（实现操作除浮动窗口外的其他可见窗口的操作）
@@ -81,6 +81,14 @@ public class FloatViewService extends Service {
         // 以屏幕左上角为原点，设置x、y初始值，相对于gravity
         wmParams.x = 0;
         wmParams.y = 152;
+    
+//        DisplayMetrics dm = new DisplayMetrics();
+//        //获取屏幕信息
+//        mWindowManager.getDefaultDisplay().getMetrics(dm);
+//        int screenWidth = dm.widthPixels;
+//        int screenHeigh = dm.heightPixels;
+//        wmParams.x = screenWidth;
+//        wmParams.y = 152;
         
         //设置悬浮窗口长宽数据
         wmParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -140,7 +148,6 @@ public class FloatViewService extends Service {
             public void onClick(View v) {
                 
                 mData.clear();
-                ;
                 RunningProcessDao runDao = new RunningProcessDao(FloatViewService.this);
                 List<RunningProcess> list = runDao.queryForAll();
                 if (list != null && list.size() > 0) {
@@ -153,9 +160,7 @@ public class FloatViewService extends Service {
                     }
                     
                 }
-                if (CustomDialogUtil.dismiss()){
-                    return;
-                }
+                
                 
                 CustomDialogUtil.showApp(mContext, mData, new OnClickDialog() {
     

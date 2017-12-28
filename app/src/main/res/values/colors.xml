@@ -3,9 +3,27 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
     <color name="gray_01">#DEDEDE</color>
     <color name="gray_02">#7E7E7E</color>
+    <color name="gray_transparent">#407E7E7E</color>
     <color name="transparent">#08FFFFFF</color>
     <color name="material_deep_teal_200">#ff80cbc4</color>
     <color name="material_deep_teal_500">#ff009688</color>
+    <color name="dark_red">#FE4365</color>//深红
+    <color name="light_red">#FC9D9A</color>//浅红色
+    <color name="light_yellow">#F9CDAD</color>//浅黄色
+    <color name="light_blue">#C8C8A9</color>//浅青色
+    <color name="pale_blue">#83AF9B</color>//淡青色
+    <color name="bu_">#DACFCB</color>//布色
+
+    <color name="transparent_dark_red">#55FE4365</color>//深红--带透明
+    <color name="transparent_light_red">#55FC9D9A</color>//浅红色--带透明
+    <color name="transparent_light_yellow">#55F9CDAD</color>//浅黄色--带透明
+    <color name="transparent_light_blue">#55C8C8A9</color>//浅青色--带透明
+    <color name="transparent_pale_blue">#5583AF9B</color>//淡青色--带透明
+    <color name="transparent_bu_">#55DACFCB</color>//布色--带透明
+
+    <color name="zhou_normal">#00000000</color>
+    <color name="zhou_pressed">#03a9f4</color>
 </resources>

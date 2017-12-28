@@ -24,6 +24,10 @@ public class CustomDialogUtil {
     
     
     public static void showDialogChoice(Context context, final boolean flag, final String msg , final List<ShowInfos> data, final OnClickDialog linstener) {
+        if (dailog != null && dailog.isShowing()){
+            dailog.dismiss();
+            return ;
+        }
         if (context == null){
             return;
         }
@@ -64,10 +68,13 @@ public class CustomDialogUtil {
         dailog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         
         dailog.show();
-        ;
         
     }
     public static void showApp(Context mContext,  final List<ShowInfos> mData, final OnClickDialog linstener) {
+        if (dailog != null && dailog.isShowing()){
+            dailog.dismiss();
+            return ;
+        }
         if (mContext == null){
             return;
         }
@@ -119,7 +126,6 @@ public class CustomDialogUtil {
         }else if (size == 4){
             ret = R.dimen.dp120;
         }
-        
         return  ret;
     }
 }

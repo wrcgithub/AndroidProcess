@@ -4,9 +4,9 @@
               android:layout_height="wrap_content">
     <ImageButton
         android:id="@+id/alert_window_imagebtn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/float_window_menu"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@drawable/float01"
         android:contentDescription="@null"
         />
 </LinearLayout>

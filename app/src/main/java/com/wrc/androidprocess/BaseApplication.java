@@ -1,9 +1,7 @@
 package com.wrc.androidprocess;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Application;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.LinkedList;
@@ -21,40 +19,6 @@ public class BaseApplication extends Application {
     public void onCreate() {
         
         super.onCreate();
-        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-            }
-        
-            @Override
-            public void onActivityStarted(Activity activity) {
-                appCount++;
-            }
-        
-            @Override
-            public void onActivityResumed(Activity activity) {
-            }
-        
-            @Override
-            public void onActivityPaused(Activity activity) {
-            }
-        
-            @Override
-            public void onActivityStopped(Activity activity) {
-                appCount--;
-            }
-        
-            @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-            
-            }
-        
-            @Override
-            public void onActivityDestroyed(Activity activity) {
-            
-            }
-        });
-        
         CrashHandler.getInstance().init(this);
         Thread.setDefaultUncaughtExceptionHandler(CrashHandler.getInstance());
         initApplication();

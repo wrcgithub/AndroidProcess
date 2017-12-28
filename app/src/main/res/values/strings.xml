@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">悬浮窗</string>
+    <string name="accessbiliityNo">请为App打开辅助功能开关！！</string>
+    <string name="ColorDialogFragment">弹出颜色选择界面</string>
+    <string name="coloractivity">颜色选择界面</string>
+    <string name="colordialog">颜色选择弹框</string>
+    <string name="floatwindow">悬浮窗</string>
 </resources>
