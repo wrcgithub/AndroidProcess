@@ -3,10 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AndroidProcess.iml" filepath="$PROJECT_DIR$/AndroidProcess.iml" />
-      <module fileurl="file://E:\AS\ASworkpace\AndroidProcess\AndroidProcess.iml" filepath="E:\AS\ASworkpace\AndroidProcess\AndroidProcess.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://E:\AS\ASworkpace\AndroidProcess\app\app.iml" filepath="E:\AS\ASworkpace\AndroidProcess\app\app.iml" />
-      <module fileurl="file://E:\AS\ASworkpace\AndroidProcess\library\library.iml" filepath="E:\AS\ASworkpace\AndroidProcess\library\library.iml" />
     </modules>
   </component>
 </project>

@@ -15,11 +15,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.wrc.androidprocess.R;
+import com.wrc.androidprocess.adapter.FloatAdapter;
 import com.wrc.androidprocess.bean.RunningProcess;
 import com.wrc.androidprocess.bean.ShowInfos;
 import com.wrc.androidprocess.dao.RunningProcessDao;
@@ -39,14 +41,17 @@ public class FloatViewService extends Service {
     
     private static final String TAG = "FloatViewService";
     //定义浮动窗口布局
-    private LinearLayout mFloatLayout;
+    private RelativeLayout mFloatLayout;
     private WindowManager.LayoutParams wmParams;
     //创建浮动窗口设置布局参数的对象
     private WindowManager mWindowManager;
     
-    private ImageButton mFloatView;
+    private RelativeLayout mFloatView;
     private Context mContext;
     private List<ShowInfos> mData = null;
+    
+    private ListView mListview;
+    private FloatAdapter adapter;
     
     
     @Override
@@ -96,11 +101,11 @@ public class FloatViewService extends Service {
         
         LayoutInflater inflater = LayoutInflater.from(getApplication());
         //获取浮动窗口视图所在布局
-        mFloatLayout = (LinearLayout) inflater.inflate(R.layout.alert_window_menu, null);
+        mFloatLayout = (RelativeLayout) inflater.inflate(R.layout.float_layout, null);
         //添加mFloatLayout
         mWindowManager.addView(mFloatLayout, wmParams);
         //浮动窗口按钮
-        mFloatView = (ImageButton) mFloatLayout.findViewById(R.id.alert_window_imagebtn);
+        mFloatView = (RelativeLayout) mFloatLayout.findViewById(R.id.alert_window_imagebtn);
         
         mFloatLayout.measure(View.MeasureSpec.makeMeasureSpec(0,
                 View.MeasureSpec.UNSPECIFIED), View.MeasureSpec
@@ -212,6 +217,53 @@ public class FloatViewService extends Service {
                 });
             }
         });
+    
+    
+    
+    
+//        mView = mFloatView.findViewById(R.id.float_view);
+//        mLinearLayout = mFloatView.findViewById(R.id.linear_float02);
+//        mListview = mFloatView.findViewById(R.id.float_listview);
+//        mView.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                if (mLinearLayout.getVisibility() == View.GONE){
+//                    mLinearLayout.setVisibility(View.VISIBLE);
+//                }else if (mLinearLayout.getVisibility() == View.VISIBLE){
+//                    mLinearLayout.setVisibility(View.GONE);
+//                }
+//            }
+//        });
+//        refresh();
+//        adapter = new FloatAdapter(mContext,mData);
+//        mListview.setAdapter(adapter);
+        
+        
+    }
+     private View mView;
+    private LinearLayout mLinearLayout ;
+    
+    
+    
+    private  void refresh(){
+        mData.clear();
+        RunningProcessDao runDao = new RunningProcessDao(FloatViewService.this);
+        List<RunningProcess> list = runDao.queryForAll();
+        if (list != null && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++){
+            
+                ShowInfos infos = AllUtils.getAppInfoByPackageName(FloatViewService.this, list.get(i).getProcessName());
+                if (infos != null) {
+                    mData.add(infos);
+                }
+            }
+        
+        }
+        if (mData == null){
+            mData = new ArrayList<>();
+        }
+        
     }
     
     

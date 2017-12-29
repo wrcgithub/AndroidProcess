@@ -121,14 +121,14 @@ public class CustomDialog extends Dialog {
         
         public Builder widthDimenRes(int dimenRes) {
             
-            width = context.getResources().getDimensionPixelOffset(dimenRes);
+            width = WindowManager.LayoutParams.WRAP_CONTENT;//context.getResources().getDimensionPixelOffset(dimenRes);
             return this;
         }
         
         
         public Builder heightDinmenRes(int dinmenRes) {
             
-            height = context.getResources().getDimensionPixelOffset(dinmenRes);
+            height = WindowManager.LayoutParams.WRAP_CONTENT;//context.getResources().getDimensionPixelOffset(dinmenRes);
             return this;
         }
         

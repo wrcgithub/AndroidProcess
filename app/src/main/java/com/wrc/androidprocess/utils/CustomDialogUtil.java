@@ -81,8 +81,8 @@ public class CustomDialogUtil {
             return;
         }
         builder = new CustomDialog.Builder(mContext);
-        builder.outSideCancel(true).view(R.layout.dialog_layout)
-                .widthDimenRes(R.dimen.dp140).heightDinmenRes(getHeight(mData.size())).style(R.style.Dialog);
+        builder.outSideCancel(true).view(R.layout.dialog_layout).widthDimenRes(R.dimen.dp140).heightDinmenRes(getHeight(mData.size()))
+               .style(R.style.Dialog);
         
         for (int i = 0; i < mData.size(); i++){
             final int index = i;
@@ -116,8 +116,8 @@ public class CustomDialogUtil {
         Window dialogWindow = dailog.getWindow();
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         dialogWindow.setGravity(Gravity.LEFT | Gravity.TOP);
-        lp.x = 1700; // 新位置X坐标
-        lp.y = -700; // 新位置Y坐标
+        lp.x = 100; // 新位置X坐标
+        lp.y = 100; // 新位置Y坐标
         lp.width = 300; // 宽度
         lp.height = 300; // 高度
         lp.alpha = 0.7f; // 透明度
