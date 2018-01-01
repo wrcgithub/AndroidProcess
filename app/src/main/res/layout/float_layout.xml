@@ -31,16 +31,17 @@
 
         <LinearLayout
             android:id="@+id/linear_float02"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/gray_01"
+            android:background="@drawable/selector_listview"
             android:gravity="center_horizontal"
+            android:padding="@dimen/dp10"
             android:orientation="horizontal">
 
             <ListView
                 android:id="@+id/float_listview"
-                android:layout_width="@dimen/dp50"
-                android:layout_height="@dimen/dp100"></ListView>
+                android:layout_width="@dimen/dp200"
+                android:layout_height="wrap_content"></ListView>
 
         </LinearLayout>
     </LinearLayout>

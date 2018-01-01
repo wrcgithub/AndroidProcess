@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <!-- 定义 处于pressed 状态时的形态。-->
+        <shape>
+            <gradient android:startColor="@color/gray_transparent" android:endColor="@color/gray_transparent"/><!--内容实现渐变-->
+            <corners android:radius="20dp" /><!--圆弧半径-->
+
+            <!--<stroke android:width="2dp" android:color="@color/gray_02" />&lt;!&ndash;边框宽度和颜色&ndash;&gt;-->
+            <!--<corners android:radius="5dp" />&lt;!&ndash;圆弧半径&ndash;&gt;-->
+            <!--<padding android:left="10dp" android:top="10dp"-->
+                     <!--android:bottom="10dp" android:right="10dp" />-->
+        </shape>
+    </item>
+    <item android:drawable="@color/colorPrimary" android:state_pressed="false"/>  //点击时手指松开的背景
+    <item android:drawable="@color/colorAccent" android:state_pressed="true"/>   //点击时手指未松开的背景
+    <item android:drawable="@color/colorPrimary"/>                              //本身的背景
+</selector>

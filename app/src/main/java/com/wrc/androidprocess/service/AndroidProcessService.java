@@ -26,6 +26,7 @@ public class AndroidProcessService extends Service {
     private Context mContext;
     private AlarmManager manager;
     private RunningProcessDao runDao;
+    private  FloatViewService floatViewService ;
     
     
     @Override
@@ -40,6 +41,7 @@ public class AndroidProcessService extends Service {
         
         super.onCreate();
         mContext = this;
+        floatViewService =new FloatViewService();
         runDao = new RunningProcessDao(mContext);
         startStatus();
     }
@@ -124,6 +126,11 @@ public class AndroidProcessService extends Service {
                 RunningProcess process = new RunningProcess();
                 process.setProcessName(packageName);
                 runDao.add(process);
+                try {
+                    floatViewService.callback.update();
+                }catch (Exception e){
+                e.printStackTrace();
+                }
             }
             
         } else {
@@ -133,6 +140,11 @@ public class AndroidProcessService extends Service {
             RunningProcess process = new RunningProcess();
             process.setProcessName(packageName);
             runDao.add(process);
+                try {
+                    floatViewService.callback.update();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }
         

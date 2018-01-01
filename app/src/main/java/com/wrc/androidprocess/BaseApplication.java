@@ -2,6 +2,7 @@ package com.wrc.androidprocess;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.LinkedList;
@@ -32,7 +33,13 @@ public class BaseApplication extends Application {
         
         super.onTerminate();
     }
-    
+    public synchronized static Context getContext() {
+        
+        if (null == instance) {
+            instance = new BaseApplication();
+        }
+        return instance.getApplicationContext();
+    }
     
     public synchronized static BaseApplication getInstance() {
         

@@ -30,6 +30,14 @@ public class FloatAdapter extends BaseAdapter {
         mInflater = LayoutInflater.from(mContext);
     }
     
+    public  void setData(List<ShowInfos> data){
+        if (data !=null){
+            mData = data;
+           notifyDataSetChanged();
+        }
+        
+    }
+    
     @Override
     //ListView需要显示的数据数量
     public int getCount() {

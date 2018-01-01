@@ -9,12 +9,12 @@ import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -24,10 +24,9 @@ import com.wrc.androidprocess.R;
 import com.wrc.androidprocess.adapter.FloatAdapter;
 import com.wrc.androidprocess.bean.RunningProcess;
 import com.wrc.androidprocess.bean.ShowInfos;
+import com.wrc.androidprocess.callback.UpdateCallback;
 import com.wrc.androidprocess.dao.RunningProcessDao;
 import com.wrc.androidprocess.utils.AllUtils;
-import com.wrc.androidprocess.utils.CustomDialogUtil;
-import com.wrc.androidprocess.utils.OnClickDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,17 +40,27 @@ public class FloatViewService extends Service {
     
     private static final String TAG = "FloatViewService";
     //定义浮动窗口布局
-    private RelativeLayout mFloatLayout;
-    private WindowManager.LayoutParams wmParams;
+    private static RelativeLayout mFloatLayout;
+    private static WindowManager.LayoutParams wmParams;
     //创建浮动窗口设置布局参数的对象
-    private WindowManager mWindowManager;
+    private static WindowManager mWindowManager;
     
-    private RelativeLayout mFloatView;
-    private Context mContext;
-    private List<ShowInfos> mData = null;
+    private static RelativeLayout mFloatView;
+    private  static Context mContext;
+    private  static List<ShowInfos> mData = null;
     
-    private ListView mListview;
-    private FloatAdapter adapter;
+    private static  ListView mListview;
+    private  static FloatAdapter adapter;
+    private  static RunningProcessDao runDao ;
+    
+    public UpdateCallback callback = new UpdateCallback() {
+        
+        @Override
+        public void update() {
+    
+            notifyData();
+        }
+    };
     
     
     @Override
@@ -59,9 +68,9 @@ public class FloatViewService extends Service {
         
         super.onCreate();
         mContext = this;
-        Log.i(TAG, "onCreate");
-        createFloatView();
+        runDao = new RunningProcessDao(mContext);
         mData = new ArrayList<>();
+        createFloatView();
     }
     
     
@@ -86,7 +95,7 @@ public class FloatViewService extends Service {
         // 以屏幕左上角为原点，设置x、y初始值，相对于gravity
         wmParams.x = 0;
         wmParams.y = 152;
-    
+
 //        DisplayMetrics dm = new DisplayMetrics();
 //        //获取屏幕信息
 //        mWindowManager.getDefaultDisplay().getMetrics(dm);
@@ -111,15 +120,15 @@ public class FloatViewService extends Service {
                 View.MeasureSpec.UNSPECIFIED), View.MeasureSpec
                 .makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         //设置监听浮动窗口的触摸移动
-        mFloatView.setOnTouchListener(new View.OnTouchListener() {
-            
+        mFloatLayout.setOnTouchListener(new View.OnTouchListener() {
+
             boolean isClick;
-            
-            
+
+
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                
+
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
 //                        mFloatView.setBackgroundResource(R.drawable.circle_red);
@@ -129,146 +138,119 @@ public class FloatViewService extends Service {
                         isClick = true;
                         // getRawX是触摸位置相对于屏幕的坐标，getX是相对于按钮的坐标
                         wmParams.x = (int) event.getRawX()
-                                - mFloatView.getMeasuredWidth() / 2;
+                                - mFloatLayout.getMeasuredWidth() / 2;
                         // 减25为状态栏的高度
                         wmParams.y = (int) event.getRawY()
-                                - mFloatView.getMeasuredHeight() / 2 - 75;
+                                - mFloatLayout.getMeasuredHeight() / 2 - 75;
                         // 刷新
                         mWindowManager.updateViewLayout(mFloatLayout, wmParams);
                         return true;
                     case MotionEvent.ACTION_UP:
 //                        mFloatView.setBackgroundResource(R.drawable.circle_cyan);
                         return isClick;// 此处返回false则属于移动事件，返回true则释放事件，可以出发点击否。
-                    
+
                     default:
                         break;
                 }
                 return false;
             }
         });
+        //设置监听浮动窗口的触摸移动
         
         mFloatView.setOnClickListener(new View.OnClickListener() {
             
             @Override
             public void onClick(View v) {
                 
+            }
+        });
+        
+        
+        mView = mFloatLayout.findViewById(R.id.float_view);
+        mLinearLayout = mFloatLayout.findViewById(R.id.linear_float02);
+        mListview = mFloatLayout.findViewById(R.id.float_listview);
+        mView.setOnClickListener(new View.OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
                 
-                
-                
-                
-                mData.clear();
-                RunningProcessDao runDao = new RunningProcessDao(FloatViewService.this);
-                List<RunningProcess> list = runDao.queryForAll();
-                if (list != null && list.size() > 0) {
-                    for (int i = 0; i < list.size(); i++){
-                        
-                        ShowInfos infos = AllUtils.getAppInfoByPackageName(FloatViewService.this, list.get(i).getProcessName());
-                        if (infos != null) {
-                            mData.add(infos);
-                        }
-                    }
-                    
+                if (mLinearLayout.getVisibility() == View.GONE) {
+                    mLinearLayout.setVisibility(View.VISIBLE);
+                    notifyData();
+                } else if (mLinearLayout.getVisibility() == View.VISIBLE) {
+                    mLinearLayout.setVisibility(View.GONE);
                 }
+            }
+        });
+        mData = refresh();
+        adapter = new FloatAdapter(mContext, mData);
+        mListview.setAdapter(adapter);
+        mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
     
-//                if (mData != null){
-//                    int[] location = new  int[2] ;
-//                    mFloatView.getLocationOnScreen(location);
-//                  int  x = location[0];
-//                    int  y = location[1];
-//                    Log.e("test", "Screenx--->" + x + "  " + "Screeny--->" + y);
-//                    Toast.makeText(FloatViewService.this,"Screen_X--->" + x + "  " + "Screen_Y--->" + y,Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+    
+                try {
+    
+                    AllUtils.runApp(mContext, mData.get(position).getPackageName());
+                }catch (Exception e){
                 
-                if (mData == null || mData.size() <1){
-                    Toast.makeText(FloatViewService.this,"无历史记录",Toast.LENGTH_SHORT).show();
-                    return;
                 }
                 
-                
-                CustomDialogUtil.showApp(mContext, mData, new OnClickDialog() {
-    
-                    @Override
-                    public void view01(String msg) {
-        
-                        AllUtils.runApp(mContext, msg);
-                    }
-    
-    
-                    @Override
-                    public void view02(String msg) {
-        
-                        AllUtils.runApp(mContext, msg);
-                    }
-    
-    
-                    @Override
-                    public void view03(String msg) {
-        
-                        AllUtils.runApp(mContext, msg);
-                    }
-    
-    
-                    @Override
-                    public void view04(String msg) {
-        
-                        AllUtils.runApp(mContext, msg);
-                    }
-                });
             }
         });
     
-    
-    
-    
-//        mView = mFloatView.findViewById(R.id.float_view);
-//        mLinearLayout = mFloatView.findViewById(R.id.linear_float02);
-//        mListview = mFloatView.findViewById(R.id.float_listview);
-//        mView.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                if (mLinearLayout.getVisibility() == View.GONE){
-//                    mLinearLayout.setVisibility(View.VISIBLE);
-//                }else if (mLinearLayout.getVisibility() == View.VISIBLE){
-//                    mLinearLayout.setVisibility(View.GONE);
-//                }
-//            }
-//        });
-//        refresh();
-//        adapter = new FloatAdapter(mContext,mData);
-//        mListview.setAdapter(adapter);
-        
-        
     }
-     private View mView;
-    private LinearLayout mLinearLayout ;
     
     
+    private static View mView;
+    private static LinearLayout mLinearLayout;
     
-    private  void refresh(){
-        mData.clear();
-        RunningProcessDao runDao = new RunningProcessDao(FloatViewService.this);
+    
+    private static List<ShowInfos>  refresh() {
+        List<ShowInfos> data = null;
+        if (data == null){
+            data = new ArrayList<>();
+        }else {
+            data.clear();
+        }
         List<RunningProcess> list = runDao.queryForAll();
         if (list != null && list.size() > 0) {
             for (int i = 0; i < list.size(); i++){
-            
-                ShowInfos infos = AllUtils.getAppInfoByPackageName(FloatViewService.this, list.get(i).getProcessName());
+                
+                ShowInfos infos = AllUtils.getAppInfoByPackageName(mContext, list.get(i).getProcessName());
                 if (infos != null) {
-                    mData.add(infos);
+                    data.add(infos);
                 }
             }
-        
+            
         }
-        if (mData == null){
-            mData = new ArrayList<>();
+        if (data == null) {
+            data = new ArrayList<>();
         }
-        
+        return  data;
     }
     
     
-    private PackageManager pm;
-    private ApplicationInfo appInfo;
+    /**
+     * 刷新ListView
+     */
+    private static void notifyData(){
+    
+        if (mData != null){
+            mData.clear();
+        }
+        mData = refresh();
+        if (adapter == null){
+            adapter = new FloatAdapter(mContext, mData);
+        }else {
+            adapter.setData(mData);
+        }
+        adapter.notifyDataSetChanged();
+    }
+    
+    private static PackageManager pm;
+    private static ApplicationInfo appInfo;
     
     
     @Override
@@ -316,5 +298,6 @@ public class FloatViewService extends Service {
             Toast.makeText(mContext, sb.toString(), Toast.LENGTH_SHORT).show();
         }
     }
+    
     
 }

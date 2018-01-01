@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
 import com.wrc.androidprocess.bean.RunningProcess;
+import com.wrc.androidprocess.utils.Logger;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ public class RunningProcessDao {
      * 更新一条记录
      * @param theme
      */
-    public void update(RunningProcess theme) {
+    public synchronized void update(RunningProcess theme) {
         try {
             processDao.update(theme);
         } catch (SQLException e) {
@@ -99,7 +100,7 @@ public class RunningProcessDao {
      * @param packageName
      * @return
      */
-    public List<RunningProcess> queryForPackage(String packageName) {
+    public synchronized List<RunningProcess> queryForPackage(String packageName) {
         List<RunningProcess> theme = null;
         try {
             theme = processDao.queryBuilder().where().eq(RunningProcess.process_Field, packageName).query();
@@ -112,13 +113,19 @@ public class RunningProcessDao {
      * 查询所有记录
      * @return
      */
-    public List<RunningProcess> queryForAll() {
+    public synchronized List<RunningProcess> queryForAll() {
+        Logger.e("---queryForAll---1---");
         List<RunningProcess> themes = new ArrayList<RunningProcess>();
+        Logger.e("---queryForAll---2---");
         try {
             themes = processDao.queryForAll();
+            Logger.e("---queryForAll---3---");
         } catch (SQLException e) {
+            Logger.e("---queryForAll---4---");
             e.printStackTrace();
+            Logger.e(e.getMessage().toString());
         }
+        Logger.e("---"+themes.size()+"---");
         return themes;
     }
 
