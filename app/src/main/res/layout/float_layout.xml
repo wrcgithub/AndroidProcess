@@ -35,13 +35,12 @@
             android:layout_height="wrap_content"
             android:background="@drawable/selector_listview"
             android:gravity="center_horizontal"
-            android:padding="@dimen/dp10"
-            android:orientation="horizontal">
+            android:padding="@dimen/dp10">
 
             <ListView
                 android:id="@+id/float_listview"
-                android:layout_width="@dimen/dp200"
-                android:layout_height="wrap_content"></ListView>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
     </LinearLayout>

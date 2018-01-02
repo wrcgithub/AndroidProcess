@@ -13,9 +13,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -49,7 +51,7 @@ public class FloatViewService extends Service {
     private  static Context mContext;
     private  static List<ShowInfos> mData = null;
     
-    private static  ListView mListview;
+    private static ListView mListview;
     private  static FloatAdapter adapter;
     private  static RunningProcessDao runDao ;
     
@@ -185,6 +187,8 @@ public class FloatViewService extends Service {
         mData = refresh();
         adapter = new FloatAdapter(mContext, mData);
         mListview.setAdapter(adapter);
+        setListViewHeight(mListview);
+        adapter.notifyDataSetChanged();
         mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
     
             @Override
@@ -200,6 +204,26 @@ public class FloatViewService extends Service {
             }
         });
     
+    }
+    //为listview动态设置高度（有多少条目就显示多少条目）
+    public static void setListViewHeight(ListView listView) {
+        //获取listView的adapter
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return;
+        }
+        int totalHeight = 0;
+        //listAdapter.getCount()返回数据项的数目
+        for (int i = 0,len = listAdapter.getCount(); i < len; i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        // listView.getDividerHeight()获取子项间分隔符占用的高度
+        // params.height最后得到整个ListView完整显示需要的高度
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() *  (listAdapter .getCount() - 1));
+        listView.setLayoutParams(params);
     }
     
     
@@ -246,6 +270,7 @@ public class FloatViewService extends Service {
         }else {
             adapter.setData(mData);
         }
+        setListViewHeight(mListview);
         adapter.notifyDataSetChanged();
     }
     
@@ -298,6 +323,5 @@ public class FloatViewService extends Service {
             Toast.makeText(mContext, sb.toString(), Toast.LENGTH_SHORT).show();
         }
     }
-    
     
 }
